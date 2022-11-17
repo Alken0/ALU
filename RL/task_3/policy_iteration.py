@@ -24,8 +24,8 @@ def policy_eval(policy, env, discount_factor=1.0, theta=0.00001):
     """
     # Start with a random (all 0) value function
     V = np.zeros(env.nS)
-    delta = 0
     while True:
+        delta = 0
         for s, action_space in env.P.items():
             v = V[s]
 
@@ -42,8 +42,7 @@ def policy_eval(policy, env, discount_factor=1.0, theta=0.00001):
 
                 sum_over_actions += pol * sum_per_next_s_in_action
             V[s] = sum_over_actions
-            delta = max(delta, v - V[s])
-            print(delta)
+            delta = max(delta, abs(v - V[s]))
         if delta < theta:
             break
     return np.array(V)
