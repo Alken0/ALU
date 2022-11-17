@@ -1,0 +1,3 @@
+why is there no closed form solution for logistic regression as there is for linear regression?
+- not convex?
+
