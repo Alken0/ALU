@@ -69,9 +69,30 @@ def policy_improvement(env, policy_eval_fn=policy_eval, discount_factor=1.0):
     V = np.zeros(env.nS)
     # Start with a random policy
     policy = np.ones([env.nS, env.nA]) / env.nA
+    # print(policy.shape)
+    # print(V.shape)
 
+    i = 0
     while True:
-        # TODO: Implement this!
-        break
+        V = policy_eval_fn(policy, env, discount_factor)
+        policy
 
+        for x in range(env.MAX_X):
+            for y in range(env.MAX_Y):
+                if V[y * 4 + x] == i:
+                    V[y * 4 + x] = i
+                    if x < env.MAX_X - 1 and policy[y * 4 + x + 1] is not 0.25:  # if next is right -> go left
+                        policy[y * 4 + x + 1] = [0, 0, 0, 1]
+                    if x > 0 and policy[y * 4 + x - 1] is not 0.25:  # if next is left -> go right
+                        policy[y * 4 + x - 1] = [0, 1, 0, 0]
+                    if y < env.MAX_Y - 1 and policy[(y + 1) * 4 + x] is not 0.25:  # if next is bottom -> go up
+                        policy[(y + 1) * 4 + x] = [1, 0, 0, 0]
+                    if y > 0 and policy[(y - 1) * 4 + x] is not 0.25:  # if next is on top -> go down
+                        policy[(y - 1) * 4 + x] = [0, 0, 1, 0]
+        i -= 1
+        if i == -4:
+            break
+    # print(V)
+    # print(eval.shape)
+    # print(policy)
     return policy, V
